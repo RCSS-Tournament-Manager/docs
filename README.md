@@ -11,14 +11,14 @@ Tourament Manager is a tool that helps to manage the competitions in the 2D Socc
 
 
 In this repository, you will find the documentation for the Tournament Manager, including: 
-* Tool Requirements Specification [[LINK](./docs/requirements-specification.md)]
-* System Design Document [[LINK](./docs/system-design.md)]
-* User/Tool Manual [[LINK](./docs/user-manual.md)] _[Not yet available]_
-* Developer Manual [[LINK](./docs/developer-manual.md)] _[Not yet available]_
-* Installation Guide [[LINK](./docs/installation-guide.md)] _[Not yet available]_
-* Configuration Guide [[LINK](./docs/configuration-guide.md)] _[Not yet available]_
-* Troubleshooting Guide [[LINK](./docs/troubleshooting-guide.md)] _[Not yet available]_
-* API Documentation [[LINK](./docs/api-documentation.md)] _[Not yet available]_
+* Tool Requirements Specification [[LINK](./docs/01-requirements-specification.md)]
+* System Design Document [[LINK](./docs/02-system-design.md)]
+* User/Tool Manual [[LINK](./docs/03-user-manual.md)] _[Not yet available]_
+* Developer Manual [[LINK](./docs/04-developer-manual.md)] _[Not yet available]_
+* Installation Guide [[LINK](./docs/05-installation-guide.md)] _[Not yet available]_
+* Configuration Guide [[LINK](./docs/06-configuration-guide.md)] _[Not yet available]_
+* Troubleshooting Guide [[LINK](./docs/07-troubleshooting-guide.md)] _[Not yet available]_
+* API Documentation [[LINK](./docs/08-api-documentation.md)] _[Not yet available]_
 
 and other relevant documents which will be listed later.
 
