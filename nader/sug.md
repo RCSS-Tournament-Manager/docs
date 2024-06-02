@@ -1,5 +1,118 @@
 # Sugesstion
 
+```mermaid
+erDiagram
+
+USER {
+    string UserName PK
+    string Email
+    string Password
+    string Role
+    string TeamName FK
+}
+USER }|--o| TEAM : belongs_to
+
+TEAM {
+    string TeamName PK
+}
+TEAM }|--o| UPLOADTEAM : has
+
+UPLOADTEAM {
+    string TeamName FK
+    string VersionName
+    string ResultStatus
+    string Error
+    string OriginalFilePath
+}
+UPLOADTEAM }|--o| GAME : used_in
+
+MAINSERVERCONFIG {
+    string ConfigName PK
+    string ConfigValue
+}
+
+SERVERCONFIG {
+    string ServerConfigName PK
+    string Configs
+}
+SERVERCONFIG }|--|| GROUP : configures
+SERVERCONFIG }|--o| GAME : used_for
+
+NEWS {
+    string NewsId PK
+    string Title
+    string Content
+    string ContentType
+    string Visibility
+    boolean Pinned
+}
+
+EMAILMOP {
+    string Email PK
+}
+
+RUNNER {
+    string RunnerName PK
+    string RunnerIP
+    string RunnerPort
+    string RunnerStatus
+}
+RUNNER }|--o| RUNNERSERVER : has
+
+RUNNERSERVER {
+    string RunnerName FK
+    int ServerNumber
+    string ServerStatus
+    string ServerPort
+}
+RUNNERSERVER }o--o{ GAME : used_by
+
+GROUP {
+    string GroupName PK
+    string GroupType
+    string ServerConfigName FK
+   string StepLadderCurrentGame
+}
+GROUP }o--|{ TEAM : includes
+GROUP }o--o| GAME : conducts
+
+GAME {
+    string GameId PK
+    string LeftTeam FK
+    string RightTeam FK
+    string ServerConfigName FK
+    string RunnerName FK
+    int ServerNumber FK
+    string GroupName FK
+    int LeftTeamScore
+    int RightTeamScore
+    int LeftTeamPenaltyScore
+    int RightTeamPenaltyScore
+    string Status
+    int Priority
+    datetime StartTime
+    datetime EndTime
+    datetime StartedTime
+    string GameLog
+    string TeamsLog
+}
+
+GAMELOG {
+    string GameId FK
+    datetime Timestamp
+    string Event
+}
+GAME ||--|{ GAMELOG : records
+
+TEAMLOG {
+    string TeamName FK
+    datetime Timestamp
+    string Event
+}
+TEAMLOG ||--|{ TEAM : logs
+```
+
+
 ## Backend API
 
 ### Team Manager
