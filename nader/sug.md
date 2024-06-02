@@ -42,8 +42,8 @@
 
 ### Email Manager
 
-- /api/email/addEmailMOP Email
-- /api/email/removeEmailMOP Email
+- /api/email/addEmailSmtp Email
+- /api/email/removeEmailSmtp Email
 - /api/email/sendEmailToAllUsers Title Content
 - /api/email/sendEmailToUsers Title Content Users
 - /api/email/sendEmailToTeams Title Content Teams
@@ -91,7 +91,7 @@
 - Email
 - Password
 - Role
-- > TeamName
+- > Team
 
 ### Team
 
@@ -126,7 +126,7 @@
 - Visibility [public, team, ...]
 - pinned [true, false]
 
-### EmailMOP
+### EmailSmtp
 
 - Email
 
@@ -162,14 +162,14 @@
 - > Runner
 - > ServerNumber
 - > Group
-- > LeftTeamScore
-- > RightTeamScore
-- > LeftTeamPenaltyScore
-- > RightTeamPenaltyScore
+- LeftTeamScore
+- RightTeamScore
+- LeftTeamPenaltyScore
+- RightTeamPenaltyScore
 - Status [noStatus, inQueue, running, ended, stopped]
 - Priority
 - StartTime
-- EndTime
 - StartedTime
+- EndTime
 - GameLog
 - TeamsLog
