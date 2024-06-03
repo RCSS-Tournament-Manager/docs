@@ -172,86 +172,276 @@ erDiagram
 
 ### Team Manager
 
-- /api/team/createNewTeam TeamName
-- /api/team/createTeamsFromFile TeamsFile
-- /api/team/createTeams Teams
-- /api/team/addUserToTeam TeamName UserName
-- /api/team/removeUserFromTeam TeamName UserName
-- /api/team/deleteTeam TeamName
-- /api/team/getTeamUsers TeamName
-- /api/team/getAllTeams
-- /api/team/getTeam TeamName
-- /api/team/changeTeamName TeamName NewTeamName
+> Admin
+- POST create new team
+    url : /api/team
+
+- PATCH update team
+    url : /api/team/:id
+
+- DELETE delete team
+    url : /api/team/:id
+- GET get team
+    url : /api/team/:id
+- PATCH add user to team
+    url : /api/team/:id/addUser
+
+- PATCH remove user from team
+    url : /api/team/:id/removeUser
+
+- GET get all teams
+    url : /api/teams
+
+- GET get team users
+    url : /api/team/:id/users
+
+
+> TeamManager
+- PATCH update team
+    url : /api/team/:id
+
+- GET get team
+    url : /api/team/:id
+
+- GET get team users
+    url : /api/team/:id/users
+
+- PATH add user to team
+    url : /api/team/:id/addUser
+
+- PATH remove user from team
+    url : /api/team/:id/removeUser
+
+- GET get all teams
+    url : /api/teams
+
+> Visitor
+- GET get team
+    url : /api/team/:id
+- GET get all teams
+    url : /api/teams
+- GET get team users
+    url : /api/team/:id/users
+
+
 
 ### User Manager
+> Admin
+- POST create new user
+    url : /api/user
 
-- /api/user/createNewUser UserName Email Password Role[Admin, Visitor, TeamManager] [TeamName]
-- /api/user/createUsersFromFile UsersFile
-- /api/user/createUsers Users
-- /api/user/deleteUser UserName
-- /api/user/getUser UserName
-- /api/user/getAllUsers
-- /api/user/changeUserRole UserName Role
-- /api/user/changeUserPassword UserName Password
-- /api/user/changeUserEmail UserName Email
-- /api/user/changeUserName UserName NewUserName
-- /api/user/changeUserTeam UserName TeamName
+- PATCH update user
+    url : /api/user/:id
+
+- DELETE delete user
+    url : /api/user/:id
+
+- GET get user
+    url : /api/user/:id
+
+- GET get all users
+    url : /api/users
+
+
+> User him self
+- PATCH update user
+    url : /api/user/:id
+- GET get user
+    url : /api/user/:id
+- GET get all users
+    url : /api/users
+
 
 ### News Manager
 
-- /api/news/createNewNews Title Content ContentType[text,html,markdown,googleDoc, ...] Visibility[public, team, ...] pinned[true, false]
-- /api/news/deleteNews NewsId
-- /api/news/getNews NewsId
-- /api/news/getAllNews
-- /api/news/changeNewsTitle NewsId NewTitle
-- /api/news/changeNewsContent NewsId NewContent
-- /api/news/changeNewsVisibility NewsId NewVisibility
-- /api/news/changeNewsPinned NewsId NewPinned
+> Admin
+- POST create new news
+    url : /api/news
+- DELETE delete news
+    url : /api/news/:id
+- PATCH update news
+    url : /api/news/:id
+- GET get news
+    url : /api/news/:id
+- GET get all news
+    url : /api/news
 
-### Email Manager
+- POST send email to users
+    url : /api/news/:id/sendEmailToUsers
 
-- /api/email/addEmailSmtp Email
-- /api/email/removeEmailSmtp Email
-- /api/email/sendEmailToAllUsers Title Content
-- /api/email/sendEmailToUsers Title Content Users
-- /api/email/sendEmailToTeams Title Content Teams
+> TeamManager
+- GET get news
+    url : /api/news/:id
+- GET get all news
+    url : /api/news
+
 
 ### Group Manager
 
-- /api/createNewGroup GroupName GroupType[group, steplader, ...] [Teams] ServerConfigName[starter, major, ...] [ServerConfigs]
-- /api/deleteGroup GroupName
-- /api/getGroup GroupName
-- /api/getAllGroups
-- /api/AddTeamToGroup GroupName TeamName
-- /api/removeTeamFromGroup GroupName TeamName
-- /api/changeGroupName GroupName NewGroupName
-- /api/changeGroupType GroupName NewGroupType
-- /api/changeGroupServerConfig GroupName NewServerConfigName
-- /api/createGames GroupName
+> Admin
+- POST create new group
+    - **URL:** /api/group
+    - **Body:**
+
+    ```json
+    {
+        "name": "Group Name",
+        "type": "group/steplader",
+        "defaultServerConfig": 1, // ServerConfig ID
+        "stepLadderState": {},
+        "status": "running"
+    }
+    ```
+
+- PATCH update group
+    - **URL:** /api/group/:id
+    - **Body:** (update fields as necessary)
+
+    ```json
+    {
+        "name": "Updated Group Name",
+        "type": "steplader",
+        "defaultServerConfig": 2,
+        "stepLadderState": {},
+        "status": "ended"
+    }
+    ```
+
+- DELETE delete group
+    - **URL:** /api/group/:id
+
+- GET get group
+    - **URL:** /api/group/:id
+
+- GET get all groups
+    - **URL:** /api/groups
 
 ### Runner Manager
 
+> Admin
+- POST create new runner
+    - **URL:** /api/runner
+    - **Body:**
+
+    ```json
+    {
+        "name": "Runner Name",
+        "messageBusId": "busId",
+        "status": "up",
+        "queueStatus": "waiting",
+        "tags": [],
+        "RunnerServers": [1, 2] // RunnerServer IDs
+    }
+    ```
+
+- PATCH update runner
+    - **URL:** /api/runner/:id
+    - **Body:** (update fields as necessary)
+
+    ```json
+    {
+        "name": "Updated Runner Name",
+        "messageBusId": "newBusId",
+        "status": "down",
+        "queueStatus": "running",
+        "tags": [],
+        "RunnerServers": [3, 4] // RunnerServer IDs
+    }
+    ```
+
+- DELETE delete runner
+    - **URL:** /api/runner/:id
+
+- GET get runner
+    - **URL:** /api/runner/:id
+
+- GET get all runners
+    - **URL:** /api/runners
+
 ### Game Manager
 
-- /api/createNewGame Teams ServerConfigs groupName [RunngerName] [ServerNumber]
-- /api/deleteGame GameId
-- /api/getGame GameId
-- /api/getAllGames
-- /api/endGame GameId Results Status
-- /api/stopGame GameId
-- /api/prioritizeGame GameId Priority
-- /api/reAddGame GameId
+> Admin
+- POST create new match
+    - **URL:** /api/match
+    - **Body:**
+
+    ```json
+    {
+        "leftTeam": 1, // Team ID
+        "rightTeam": 2, // Team ID
+        "ServerConfig": 3, // ServerConfig ID
+        "Runner": 4, // Runner ID
+        "Group": 5, // Group ID
+        "leftTeamScore": 0,
+        "rightTeamScore": 0,
+        "leftTeamPenaltyScore": 0,
+        "rightTeamPenaltyScore": 0,
+        "status": "inQueue",
+        "priority": 1,
+        "startTime": "2023-10-01T00:00:00Z",
+        "startedTime": "2023-10-01T00:05:00Z",
+        "endTime": "2023-10-01T01:00:00Z",
+        "gameLog": 6, // FileUpload ID
+        "teamsLog": 7 // FileUpload ID
+    }
+    ```
+
+- PATCH update match
+    - **URL:** /api/match/:id
+    - **Body:** (update fields as necessary)
+
+    ```json
+    {
+        "status": "running",
+        "leftTeamScore": 1,
+        "rightTeamScore": 1,
+    }
+    ```
+
+- DELETE delete match
+    - **URL:** /api/match/:id
+
+- GET get match
+    - **URL:** /api/match/:id
+
+- GET get all matches
+    - **URL:** /api/matches
 
 ### Server Config Manager
 
-- /api/uploadMainServerConfig configFile
-- /api/getMainServerConfigs
-- /api/addServerConfig ServerConfigName Config
-- /api/deleteServerConfig ServerConfigName
-- /api/getServerConfig ServerConfigName
-- /api/changeServerConfig ServerConfigName Config
+> Admin
+- POST create new server config
+    - **URL:** /api/serverconfig
+    - **Body:**
 
+    ```json
+    {
+        "name": "Server Config Name",
+        "description": "Description of server config",
+        "value": {}
+    }
+    ```
 
+- PATCH update server config
+    - **URL:** /api/serverconfig/:id
+    - **Body:** (update fields as necessary)
+
+    ```json
+    {
+        "name": "Updated Server Config Name",
+        "description": "Updated description",
+        "value": {}
+    }
+    ```
+
+- DELETE delete server config
+    - **URL:** /api/serverconfig/:id
+
+- GET get server config
+    - **URL:** /api/serverconfig/:id
+
+- GET get all server configs
+    - **URL:** /api/serverconfigs
 
 
 
