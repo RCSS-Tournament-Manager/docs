@@ -2,116 +2,171 @@
 
 ```mermaid
 erDiagram
+    USER {
+        int id PK
+        string UserName
+        string Email
+        string PasswordSalt
+        string PasswordHash
+        enum Role 
+        int Team FK
+        int photo FK
+        boolean isDeleted
+        datetime lastLoginAt
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    TEAM {
+        int id PK
+        string name
+        string affiliation
+        int photo FK
+        int managerId FK
+        boolean isDeleted
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    BINARYUPLOAD {
+        int id PK
+        int Team FK
+        enum resultStatus
+        string errorMsg
+        int binaryFile FK
+        string finishedDockerImageHash
+        int finishedDockerImageFile FK
+        int createdBy FK
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    FILEUPLOAD {
+        int id PK
+        string fileSaveId
+        string fileName
+        string fileType
+        int fileSize
+        boolean isDeleted
+        boolean isPublic
+        int createdBy FK
+        datetime createdAt
+    }
+    
+    SERVERCONFIG {
+        int id PK
+        string name
+        string description
+        json value
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    NEWS {
+        int id PK
+        string title
+        text content
+        text brief
+        enum contentType 
+        enum visibility 
+        boolean pinned
+        string link
+        int createdBy FK
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    RUNNER {
+        int id PK
+        string name
+        string messageBusId
+        enum status 
+        datetime lastHeartBeat
+        enum queueStatus
+        json tags
+        int[] RunnerServers FK
+    }
+    
+    RUNNERSERVER {
+        int id PK
+        string ip
+        enum ServerStatus 
+    }
+    
+    GROUP {
+        int id PK
+        string name
+        enum type
+        int[] Teams FK
+        int defaultServerConfig FK
+        json stepLadderState
+        enum status
+        datetime createdAt
+        datetime updatedAt
+    }
 
-USER {
-    string UserName PK
-    string Email
-    string Password
-    string Role
-    string TeamName FK
-}
-USER }|--o| TEAM : belongs_to
+    GROUPTEAM {
+        int id PK
+        int Group FK
+        int Team FK
+        enum state
+    }
 
-TEAM {
-    string TeamName PK
-}
-TEAM }|--o| UPLOADTEAM : has
+    MATCH {
+        int id PK
+        int leftTeam FK
+        int rightTeam FK
+        int ServerConfig FK
+        int Runner FK
+        int Group FK
+        int leftTeamScore
+        int rightTeamScore
+        int leftTeamPenaltyScore
+        int rightTeamPenaltyScore
+        enum status
+        int priority
+        timestamp startTime
+        timestamp startedTime
+        timestamp endTime
+        int gameLog FK
+        int teamsLog FK
+        datetime createdAt
+        datetime updatedAt
+    }
 
-UPLOADTEAM {
-    string TeamName FK
-    string VersionName
-    string ResultStatus
-    string Error
-    string OriginalFilePath
-}
-UPLOADTEAM }|--o| GAME : used_in
+    EVENT {
+        int id PK
+        int createdBy FK
+        string operation
+        json operationData
+        datetime createdAt
+    }
 
-MAINSERVERCONFIG {
-    string ConfigName PK
-    string ConfigValue
-}
-
-SERVERCONFIG {
-    string ServerConfigName PK
-    string Configs
-}
-SERVERCONFIG }|--|| GROUP : configures
-SERVERCONFIG }|--o| GAME : used_for
-
-NEWS {
-    string NewsId PK
-    string Title
-    string Content
-    string ContentType
-    string Visibility
-    boolean Pinned
-}
-
-EMAILMOP {
-    string Email PK
-}
-
-RUNNER {
-    string RunnerName PK
-    string RunnerIP
-    string RunnerPort
-    string RunnerStatus
-}
-RUNNER }|--o| RUNNERSERVER : has
-
-RUNNERSERVER {
-    string RunnerName FK
-    int ServerNumber
-    string ServerStatus
-    string ServerPort
-}
-RUNNERSERVER }o--o{ GAME : used_by
-
-GROUP {
-    string GroupName PK
-    string GroupType
-    string ServerConfigName FK
-   string StepLadderCurrentGame
-}
-GROUP }o--|{ TEAM : includes
-GROUP }o--o| GAME : conducts
-
-GAME {
-    string GameId PK
-    string LeftTeam FK
-    string RightTeam FK
-    string ServerConfigName FK
-    string RunnerName FK
-    int ServerNumber FK
-    string GroupName FK
-    int LeftTeamScore
-    int RightTeamScore
-    int LeftTeamPenaltyScore
-    int RightTeamPenaltyScore
-    string Status
-    int Priority
-    datetime StartTime
-    datetime EndTime
-    datetime StartedTime
-    string GameLog
-    string TeamsLog
-}
-
-GAMELOG {
-    string GameId FK
-    datetime Timestamp
-    string Event
-}
-GAME ||--|{ GAMELOG : records
-
-TEAMLOG {
-    string TeamName FK
-    datetime Timestamp
-    string Event
-}
-TEAMLOG ||--|{ TEAM : logs
+    %% relationships
+    USER ||--o{ TEAM : "manages"
+    USER ||--o{ FILEUPLOAD : "uploads"
+    USER ||--o{ BINARYUPLOAD : "creates"
+    USER ||--o{ NEWS : "writes"
+    USER ||--o{ EVENT : "creates"
+    TEAM ||--o{ BINARYUPLOAD : "uses"
+    TEAM ||--|| RUNNER : "has"
+    TEAM ||--o{ GROUPTEAM : "belongs to"
+    TEAM ||--|| MATCH : "plays in"
+    FILEUPLOAD ||--o| TEAM : "is used by"
+    FILEUPLOAD ||--o| BINARYUPLOAD : "is binaryFile"
+    FILEUPLOAD ||--o| MATCH : "is gameLog"
+    SERVERCONFIG ||--|| GROUP : "configures"
+    SERVERCONFIG ||--|| MATCH : "configures"
+    NEWS ||--o{ TEAM : "views"
+    NEWS ||--o{ GROUP : "views"
+    RUNNER ||--o| MATCH : "runs"
+    RUNNERSERVER ||--|| RUNNER : "belongs to"
+    GROUP ||--o| GROUPTEAM : "contains"
+    GROUP ||--o| MATCH : "has"
+    GROUPTEAM ||--|| TEAM : "is part of"
+    GROUPTEAM ||--|| GROUP : "includes"
+    MATCH ||--o| GROUP : "has"
 ```
-
 
 ## Backend API
 
@@ -196,93 +251,141 @@ TEAMLOG ||--|{ TEAM : logs
 - /api/getServerConfig ServerConfigName
 - /api/changeServerConfig ServerConfigName Config
 
+
+
+
+
 ## Database Models
 
 ### User
 
+- id
 - UserName
 - Email
-- Password
-- Role
+- PasswordSalt
+- PasswordHash
+- Role[Admin, Visitor, TeamManager, TeamMember]
 - > Team
+- photo > FileUpload
+- isDeleted
+- lastLoginAt
+- createdAt
+- updatedAt
 
 ### Team
+- id
+- name
+- affiliation
+- photo > FileUpload
+- managerId > User
+- isDeleted
+- createdAt
+- updatedAt
 
-- TeamName
-- > Users
-- > UploadTeam
+### BinaryUpload
 
-### UploadTeam
+- > Team
+- resultStatus [Pass, Fail, NotChecked]
+- errorMsg
+- binaryFile > FileUpload
+- finishedDockerImageHash
+- finishedDockerImageFile > FileUpload
+- createdBy > User
+- createdAt
+- updatedAt
 
-- TeamName
-- VersionName
-- ResultStatus [Pass, Fail, NotChecked]
-- > Game
-- Error
-- OrginalFilePath
 
-### MainServerConfig
-
-- ConfigName
-- ConfigValue
+### FileUpload
+- id 
+- fileSaveId
+- fileName
+- fileType
+- fileSize
+- isDeleted
+- isPublic
+- createdBy > User
+- createdAt
 
 ### ServerConfig
-
-- ServerConfigName
-- Configs (str)
+- id
+- name
+- description
+- value [json]
+- createdAt
+- updatedAt
 
 ### News
-
-- Title
-- Content
-- ContentType [text,html,markdown,googleDoc, ...]
-- Visibility [public, team, ...]
+- id
+- title
+- content
+- brief
+- contentType [text,html,markdown,googleDoc, ...]
+- visibility [public, team, ...]
 - pinned [true, false]
+- link
+- createdBy > User
+- createdAt
+- updatedAt
 
-### EmailSmtp
-
-- Email
 
 ### Runner
-
-- RunnerName
-- RunnerIP
-- RunnerPort
-- RunnerStatus [up, down]
-- >> RunnerServers
+- id
+- name
+- messageBusId
+- status [up, down, non-responsive]
+- lastHeartBeat
+- queueStatus [running, waiting, stopped]
+- tags [Array]
+- > RunnerServers
 
 ### RunnerServer
-
-- > Runner
-- ServerNumber
+- id
+- ip
 - ServerStatus [running, waiting]
-- ServerPort
+
 
 ### Group
-
-- GroupName
-- GroupType [group, steplader, ...]
+- id
+- name
+- type [group, steplader, ...]
 - >> Teams
-- > ServerConfig
-- >> Games
-- stepLaderCurrentGame
+- defaultServerConfig > ServerConfig
+- stepLadderState [json]
+- status [noStatus, running, ended, stopped]
+- createdAt
+- updatedAt
 
-### Game
-
-- > LeftTeam
-- > RightTeam
-- > ServerConfig
-- > Runner
-- > ServerNumber
+### Group-Team
+- id
 - > Group
-- LeftTeamScore
-- RightTeamScore
-- LeftTeamPenaltyScore
-- RightTeamPenaltyScore
-- Status [noStatus, inQueue, running, ended, stopped]
-- Priority
-- StartTime
-- StartedTime
-- EndTime
-- GameLog
-- TeamsLog
+- > Team
+- state [lost]
+
+### Match
+- id
+- leftTeam > Team
+- rightTeam > Team
+- > ServerConfig
+- ?> Runner
+- ?> Group
+- leftTeamScore
+- rightTeamScore
+- leftTeamPenaltyScore
+- rightTeamPenaltyScore
+- status [noStatus,error , inQueue, running, ended, stopped]
+- priority
+- startTime [timestamp]
+- startedTime [timestamp]
+- endTime [timestamp]
+- gameLog > FileUpload
+- teamsLog > FileUpload
+- createdAt
+- updatedAt
+
+
+### Events
+- id
+- createdBy > User
+- operation 
+- operationData [json]
+- createdAt
