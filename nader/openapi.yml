@@ -1,0 +1,860 @@
+openapi: 3.0.0
+info:
+  title: Backend API
+  description: API documentation for backend services
+  version: 1.0.0
+paths:
+  /api/team:
+    post:
+      summary: Create new team
+      tags:
+        - Team Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        "201":
+          description: Team created successfully
+  /api/team/{id}:
+    patch:
+      summary: Update team
+      tags:
+        - Team Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        "200":
+          description: Team updated successfully
+    delete:
+      summary: Delete team
+      tags:
+        - Team Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Team deleted successfully
+    get:
+      summary: Get team
+      tags:
+        - Team Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Team fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+  /api/team/{id}/addUser:
+    patch:
+      summary: Add user to team
+      tags:
+        - Team Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                userId:
+                  type: integer
+      responses:
+        "200":
+          description: User added to team
+  /api/team/{id}/removeUser:
+    patch:
+      summary: Remove user from team
+      tags:
+        - Team Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                userId:
+                  type: integer
+      responses:
+        "200":
+          description: User removed from team
+  /api/teams:
+    get:
+      summary: Get all teams
+      tags:
+        - Team Management
+      responses:
+        "200":
+          description: Teams fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+  /api/team/{id}/users:
+    get:
+      summary: Get team users
+      tags:
+        - Team Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Team users fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /api/user:
+    post:
+      summary: Create new user
+      tags:
+        - User Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "201":
+          description: User created successfully
+  /api/user/{id}:
+    patch:
+      summary: Update user
+      tags:
+        - User Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: User updated successfully
+    delete:
+      summary: Delete user
+      tags:
+        - User Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: User deleted successfully
+    get:
+      summary: Get user
+      tags:
+        - User Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/users:
+    get:
+      summary: Get all users
+      tags:
+        - User Management
+      responses:
+        "200":
+          description: Users fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /api/news:
+    post:
+      summary: Create new news
+      tags:
+        - News Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
+      responses:
+        "201":
+          description: News created successfully
+    get:
+      summary: Get all news
+      tags:
+        - News Management
+      responses:
+        "200":
+          description: News fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/News'
+  /api/news/{id}:
+    delete:
+      summary: Delete news
+      tags:
+        - News Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: News deleted successfully
+    patch:
+      summary: Update news
+      tags:
+        - News Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
+      responses:
+        "200":
+          description: News updated successfully
+    get:
+      summary: Get news
+      tags:
+        - News Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: News fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+  /api/news/{id}/sendEmailToUsers:
+    post:
+      summary: Send email to users
+      tags:
+        - News Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Emails sent successfully
+  /api/group:
+    post:
+      summary: Create new group
+      tags:
+        - Group Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        "201":
+          description: Group created successfully
+  /api/group/{id}:
+    patch:
+      summary: Update group
+      tags:
+        - Group Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        "200":
+          description: Group updated successfully
+    delete:
+      summary: Delete group
+      tags:
+        - Group Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Group deleted successfully
+    get:
+      summary: Get group
+      tags:
+        - Group Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Group fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+  /api/groups:
+    get:
+      summary: Get all groups
+      tags:
+        - Group Management
+      responses:
+        "200":
+          description: Groups fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+  /api/runner:
+    post:
+      summary: Create new runner
+      tags:
+        - Runner Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Runner'
+      responses:
+        "201":
+          description: Runner created successfully
+  /api/runner/{id}:
+    patch:
+      summary: Update runner
+      tags:
+        - Runner Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Runner'
+      responses:
+        "200":
+          description: Runner updated successfully
+    delete:
+      summary: Delete runner
+      tags:
+        - Runner Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Runner deleted successfully
+    get:
+      summary: Get runner
+      tags:
+        - Runner Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Runner fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Runner'
+  /api/runners:
+    get:
+      summary: Get all runners
+      tags:
+        - Runner Management
+      responses:
+        "200":
+          description: Runners fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Runner'
+  /api/match:
+    post:
+      summary: Create new match
+      tags:
+        - Match Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Match'
+      responses:
+        "201":
+          description: Match created successfully
+  /api/match/{id}:
+    patch:
+      summary: Update match
+      tags:
+        - Match Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Match'
+      responses:
+        "200":
+          description: Match updated successfully
+    delete:
+      summary: Delete match
+      tags:
+        - Match Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Match deleted successfully
+    get:
+      summary: Get match
+      tags:
+        - Match Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Match fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+  /api/matches:
+    get:
+      summary: Get all matches
+      tags:
+        - Match Management
+      responses:
+        "200":
+          description: Matches fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+  /api/serverconfig:
+    post:
+      summary: Create new server config
+      tags:
+        - Server Config Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerConfig'
+      responses:
+        "201":
+          description: Server config created successfully
+  /api/serverconfig/{id}:
+    patch:
+      summary: Update server config
+      tags:
+        - Server Config Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerConfig'
+      responses:
+        "200":
+          description: Server config updated successfully
+    delete:
+      summary: Delete server config
+      tags:
+        - Server Config Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Server config deleted successfully
+    get:
+      summary: Get server config
+      tags:
+        - Server Config Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Server config fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerConfig'
+  /api/serverconfigs:
+    get:
+      summary: Get all server configs
+      tags:
+        - Server Config Management
+      responses:
+        "200":
+          description: Server configs fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerConfig'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        UserName:
+          type: string
+        Email:
+          type: string
+        PasswordSalt:
+          type: string
+        PasswordHash:
+          type: string
+        Role:
+          type: string
+          enum:
+            - Admin
+            - Visitor
+            - TeamManager
+            - TeamMember
+        Team:
+          type: integer
+        photo:
+          type: integer
+        isDeleted:
+          type: boolean
+        lastLoginAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        affiliation:
+          type: string
+        photo:
+          type: integer
+        managerId:
+          type: integer
+        isDeleted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    News:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        brief:
+          type: string
+        contentType:
+          type: string
+          enum:
+            - text
+            - html
+            - markdown
+            - googleDoc
+        visibility:
+          type: string
+          enum:
+            - public
+            - team
+        pinned:
+          type: boolean
+        link:
+          type: string
+        createdBy:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - group
+            - stepladder
+        Teams:
+          type: array
+          items:
+            type: integer
+        defaultServerConfig:
+          type: integer
+        stepLadderState:
+          type: string
+          format: json
+        status:
+          type: string
+          enum:
+            - noStatus
+            - running
+            - ended
+            - stopped
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Runner:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        messageBusId:
+          type: string
+        status:
+          type: string
+          enum:
+            - up
+            - down
+            - non-responsive
+        lastHeartBeat:
+          type: string
+          format: date-time
+        queueStatus:
+          type: string
+          enum:
+            - running
+            - waiting
+            - stopped
+        tags:
+          type: array
+          items:
+            type: string
+        RunnerServers:
+          type: array
+          items:
+            type: integer
+    Match:
+      type: object
+      properties:
+        id:
+          type: integer
+        leftTeam:
+          type: integer
+        rightTeam:
+          type: integer
+        ServerConfig:
+          type: integer
+        Runner:
+          type: integer
+        Group:
+          type: integer
+        leftTeamScore:
+          type: integer
+        rightTeamScore:
+          type: integer
+        leftTeamPenaltyScore:
+          type: integer
+        rightTeamPenaltyScore:
+          type: integer
+        status:
+          type: string
+          enum:
+            - noStatus
+            - error
+            - inQueue
+            - running
+            - ended
+            - stopped
+        priority:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        startedTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        gameLog:
+          type: integer
+        teamsLog:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ServerConfig:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        value:
+          type: string
+          format: json
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
